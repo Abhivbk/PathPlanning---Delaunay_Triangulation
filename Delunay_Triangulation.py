@@ -141,20 +141,20 @@ def plot_cones_and_triangles(cones: List[Cone], triangles: List[Tuple[int, int, 
     plt.show()
 
 def get_edges(triangles: List[Tuple[int, int, int]]):
-    edges = []
+    edges = set()
     for t in triangles:
         i,j,k = t
-        edges.append((i,j))
-        edges.append((j, k))
-        edges.append((k, i))
+        edges.add((i,j))
+        edges.add((j, k))
+        edges.add((k, i))
     return edges
 def useful_edges(cones, edges: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
-    useful_edges = []
+    useful_edges = set()
     for edge in edges:
         c1, c2 = cones[edge[0]], cones[edge[1]]
         types = {c1.cone_type, c2.cone_type}
         if len(types) > 1:
-            useful_edges.append(edge)
+            useful_edges.add(edge)
     return useful_edges
 
 def waypoints(cones, useful_edges: List[Tuple[int, int]]):
@@ -177,14 +177,12 @@ def main():
     triangles = filter_triangles(cones, triangles) # Filtering the triangles made with same color cones
 
     # Step 3: Output
-    print_triangles(cones, triangles)
+    #print_triangles(cones, triangles)
 
     # Step 4: Display
-    plot_cones_and_triangles(cones, triangles, waypoints(cones, useful_edges(cones, triangles) ))
+    plot_cones_and_triangles(cones, triangles, waypoints(cones, useful_edges(cones, get_edges(triangles)) ))
 
-    # print(get_edges(triangles))
-    # print(useful_edges(cones, get_edges(triangles)))
-    # print(waypoints(cones, useful_edges(cones, get_edges(triangles))))
+
 
 
 
